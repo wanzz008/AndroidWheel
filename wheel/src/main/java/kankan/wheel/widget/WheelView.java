@@ -35,6 +35,7 @@ import android.widget.LinearLayout;
 import java.util.LinkedList;
 import java.util.List;
 
+import kankan.wheel.R;
 import kankan.wheel.widget.adapters.WheelViewAdapter;
 
 /**
@@ -45,7 +46,10 @@ import kankan.wheel.widget.adapters.WheelViewAdapter;
 public class WheelView extends View {
 
 	/** Top and bottom shadows colors */
-	private static final int[] SHADOWS_COLORS = new int[] { 0xFF111111,
+//	private static final int[] SHADOWS_COLORS = new int[] { 0xFF111111,
+//			0x00AAAAAA, 0x00AAAAAA };
+
+	private static final int[] SHADOWS_COLORS = new int[] { 0x00AAAAAA,
 			0x00AAAAAA, 0x00AAAAAA };
 
 	/** Top and bottom items offset (to hide that) */
@@ -55,7 +59,7 @@ public class WheelView extends View {
 	private static final int PADDING = 10;
 
 	/** Default count of visible items */
-	private static final int DEF_VISIBLE_ITEMS = 5;
+	private static final int DEF_VISIBLE_ITEMS = 6;
 
 	// Wheel Values
 	private int currentItem = 0;
@@ -94,9 +98,9 @@ public class WheelView extends View {
 	private WheelRecycle recycle = new WheelRecycle(this);
 
 	// Listeners
-	private List<OnWheelChangedListener> changingListeners = new LinkedList<OnWheelChangedListener>();
-	private List<OnWheelScrollListener> scrollingListeners = new LinkedList<OnWheelScrollListener>();
-    private List<OnWheelClickedListener> clickingListeners = new LinkedList<OnWheelClickedListener>();
+	private List<OnWheelChangedListener> changingListeners = new LinkedList<>();
+	private List<OnWheelScrollListener> scrollingListeners = new LinkedList<>();
+    private List<OnWheelClickedListener> clickingListeners = new LinkedList<>();
 
 	/**
 	 * Constructor
@@ -424,7 +428,7 @@ public class WheelView extends View {
 	 */
 	private void initResourcesIfNecessary() {
 		if (centerDrawable == null) {
-//			centerDrawable = getContext().getResources().getDrawable(R.drawable.wheel_val);
+			centerDrawable = getContext().getResources().getDrawable(R.drawable.wheel_val);
 		}
 
 		if (topShadow == null) {
@@ -554,8 +558,10 @@ public class WheelView extends View {
 		if (viewAdapter != null && viewAdapter.getItemsCount() > 0) {
 	        updateView();
 
-	        drawItems(canvas);
-	        drawCenterRect(canvas);
+			/** 下面两句代码的顺序会影响最终效果，中间色块覆盖在上面，还是下面，调整代码顺序即可  _wzz */
+			drawCenterRect(canvas);
+
+			drawItems(canvas);  // 先执行此句，得在wheel_val.xml中设置透明度 #aaf2f2f2 不然会全覆盖看不到中间条目
 		}
 		
         drawShadows(canvas);

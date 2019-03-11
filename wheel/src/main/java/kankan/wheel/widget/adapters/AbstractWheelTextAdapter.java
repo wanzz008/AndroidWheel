@@ -186,13 +186,25 @@ public abstract class AbstractWheelTextAdapter extends AbstractWheelAdapter {
                 convertView = getView(itemResourceId, parent);
             }
             TextView textView = getTextView(convertView, itemTextResourceId);
+            textView.setPadding(10,10,10,10);
             if (textView != null) {
                 CharSequence text = getItemText(index);
                 if (text == null) {
                     text = "";
                 }
-                textView.setText(text);
-    
+
+//                int ge = Integer.valueOf(text.toString()) / 10  + 36 ;
+//                int dian = Integer.valueOf(text.toString()) % 10 ;
+//                String str = ge + "." + dian;
+
+                textView.setText(text );
+//                textView.setText( str );
+                // 0-9   36.0-36.9
+                // 10-19 37.0-37.9
+                // 20-29 38.0-38.9
+                // 30-39 39.0-39.9
+                // 40    40.0
+
                 if (itemResourceId == TEXT_VIEW_ITEM_RESOURCE) {
                     configureTextView(textView);
                 }
